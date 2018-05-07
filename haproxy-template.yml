@@ -1,0 +1,57 @@
+apiVersion: v1
+kind: DeploymentConfig
+metadata:
+  name: haproxy-exporter-template
+  labels:
+    app: haproxy-exporter
+spec:
+  strategy:
+    type: Rolling
+    rollingParams:
+      updatePeriodSeconds: 1
+      intervalSeconds: 1
+      timeoutSeconds: 600
+      maxUnavailable: 25%
+      maxSurge: 25%
+    resources: {}
+  triggers:
+    - type: ConfigChange
+    - type: ImageChange
+      imageChangeParams:
+        automatic: true
+        containerNames:
+          - haproxy-exporter
+        from:
+          kind: ImageStreamTag
+          namespace: openshift
+          name: 'haproxy-exporter:latest'
+  replicas: 1
+  test: false
+  selector:
+    app: haproxy-exporter-template
+    deploymentconfig: haproxy-exporter
+  template:
+    metadata:
+      labels:
+        app: haproxy-exporter
+        deploymentconfig: haproxy-exporter-template
+      annotations:
+        openshift.io/generated-by: OpenShiftWebConsole
+    spec:
+      containers:
+        - name: haproxy-exporter
+          image: >-
+            REGISTRY-IP:5000/openshift/haproxy-exporter
+          args:
+            - >-
+              --haproxy.scrape-uri=http://admin:ROUTER-PASS@ROUTER-IP:ROUTER-PORT/haproxy?stats;csv
+          ports:
+            - containerPort: 9101
+              protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          imagePullPolicy: Always
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
