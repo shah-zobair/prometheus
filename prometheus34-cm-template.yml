@@ -11,6 +11,21 @@ data:
           miqTarget: "ContainerNode"
           severity: "HIGH"
           message: "{{$labels.instance}} is down"
+      - alert: "Too Many Pods"
+        expr: sum(kubelet_running_pod_count) > 4000
+        annotations:
+          miqTarget: "ExtManagementSystem"
+          severity: "ERROR"
+          message: "Too many running pods"
+      - alert: "Node CPU Usage"
+        expr: (100 - (avg by (instance) (irate(node_cpu{job="kubernetes-nodes-exporter",mode="idle"}[5m])) * 100)) > 10
+        for: 30s
+        labels:
+          severity: "ERROR"
+        annotations:
+          miqTarget: "ExtManagementSystem"
+          severity: "ERROR"
+          message: "{{$labels.instance}}: CPU usage is above 4% (current value is: {{ $value }})"
   prometheus.yml: |
     rule_files:
       - '*.rules'
