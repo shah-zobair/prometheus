@@ -29,7 +29,7 @@ spec:
   test: false
   selector:
     app: haproxy-exporter
-    deploymentconfig: haproxy-exporter
+    deploymentconfig: haproxy-exporter-template
   template:
     metadata:
       labels:
