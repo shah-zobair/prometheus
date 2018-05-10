@@ -158,6 +158,8 @@ oc patch namespace prometheus -p '{"metadata": {"annotations": {"openshift.io/no
 
 oadm policy add-scc-to-user anyuid -z default -n prometheus
 oadm policy add-scc-to-user hostaccess -z prometheus-node-exporter
+oadm policy add-scc-to-user hostnetwork -z prometheus-node-exporter
+oadm policy add-scc-to-user hostnetwork -z prometheus
 oadm policy add-cluster-role-to-user cluster-admin system:serviceaccount:prometheus:default
 oadm policy add-cluster-role-to-user cluster-admin system:serviceaccount:prometheus:prometheus
  
