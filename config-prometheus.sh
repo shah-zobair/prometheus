@@ -94,8 +94,8 @@ done
 ##########################
 
 
-MASTER_URL=`grep ^masterPublicURL: /etc/origin/master/master-config.yaml | cut -f2 -d" " | sed s/"https:\/\/"//g`
-MASTER_PORT=443
+MASTER_URL=`grep ^masterPublicURL: /etc/origin/master/master-config.yaml | cut -f2 -d" " | sed s/"https:\/\/"//g | cut -f1 -d:`
+MASTER_PORT=`grep ^masterPublicURL: /etc/origin/master/master-config.yaml | cut -f2 -d" " | sed s/"https:\/\/"//g | cut -f2 -d:`
 REGISTRY_URL=`oc get route docker-registry -n default | grep docker-registry | awk {'print $2'}`
 
 rm -f prometheus34-deployment.yml
