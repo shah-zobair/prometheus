@@ -51,7 +51,7 @@ items:
         hostPID: true
         nodeSelector: {"prometheus":"true"}
         containers:
-        - image: REGISTRY-IP:5000/openshift/prometheus-node-exporter
+        - image: REGISTRY-IP:5000/openshift/prometheus-node-exporter:v3.6
           name: node-exporter
           ports:
           - containerPort: 9100
