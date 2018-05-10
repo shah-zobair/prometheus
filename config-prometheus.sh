@@ -169,7 +169,7 @@ oc delete cm prometheus -n prometheus
 oc create -f prometheus34-cm.yml -n prometheus
 oc new-app grafana -n prometheus
 
-for file in `ls haproxy-*`; do
+for file in `ls haproxy-*-*`; do
 oc create -f $file -n prometheus
 done
 oc create -f haproxy-svc.yml 
