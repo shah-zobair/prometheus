@@ -222,11 +222,11 @@ objects:
             name: prometheus-scraper-secret
           resources:
             limits:
-              cpu: 2
-              memory: 8Gi
+              cpu: 1
+              memory: 1Gi
             requests:
-              cpu: 2
-              memory: 8Gi
+              cpu: 1
+              memory: 1Gi
  
         - name: alert-buffer
           args:
