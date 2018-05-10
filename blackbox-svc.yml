@@ -13,4 +13,4 @@ spec:
     port: 9115
     protocol: TCP
   selector:
-    app: blackbox
+    app: blackbox-exporter
