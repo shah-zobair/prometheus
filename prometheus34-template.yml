@@ -97,7 +97,7 @@ objects:
   metadata:
     annotations:
       prometheus.io/scrape: "true"
-      prometheus.io/scheme: https
+      prometheus.io/scheme: http
       service.alpha.openshift.io/serving-cert-secret-name: prometheus-tls
     labels:
       name: prometheus
