@@ -28,7 +28,7 @@ spec:
   replicas: 1
   test: false
   selector:
-    app: haproxy-exporter-template
+    app: haproxy-exporter
     deploymentconfig: haproxy-exporter
   template:
     metadata:
