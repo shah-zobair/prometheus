@@ -32,6 +32,10 @@ oc login -u system:admin
 # Expose routes for Routers
 ##########################
 
+for DC in `oc get dc | grep router | cut -f1`;do
+    oc env dc $DC ROUTER_METRICS_TYPE-
+done
+
 for SERVICE in `oc get svc -n default | grep router | awk {'print $1'}`; do
     PORT=`oc get svc $SERVICE -n default| grep -o 19..`
     oc expose service $SERVICE --port=$PORT -n default
@@ -46,6 +50,7 @@ done
 REGISTRY_IP=`oc get svc -n default | grep docker-registry | awk {'print $2'}`
 INFRA1_IP=`oc describe ep router -n default | grep Addresses | grep -v NotReadyAddresses | awk {'print $2'} | cut -f1 -d,`
 INFRA2_IP=`oc describe ep router -n default | grep Addresses | grep -v NotReadyAddresses | awk {'print $2'} | cut -f2 -d,`
+INFRA3_IP=`oc describe ep router -n default | grep Addresses | grep -v NotReadyAddresses | awk {'print $3'} | cut -f2 -d,`
 ROUTER_PORT=`oc get svc router -n default | grep -o 19..`
 ROUTER_PASSWORD=`oc describe dc router -n default | grep STATS_PASSWORD | awk {'print $2'}`
 I=0
@@ -55,22 +60,28 @@ for ROUTE in `oc get route -n  default | grep router | awk {'print $2'}`; do
 
     cp haproxy-template.yml haproxy-$I-1.yml
     cp haproxy-template.yml haproxy-$I-2.yml
+    cp haproxy-template.yml haproxy-$I-3.yml
 
     sed -i s/haproxy-exporter-template/haproxy-exporter-$I-1/g haproxy-$I-1.yml
     sed -i s/haproxy-exporter-template/haproxy-exporter-$I-2/g haproxy-$I-2.yml
+    sed -i s/haproxy-exporter-template/haproxy-exporter-$I-3/g haproxy-$I-3.yml
 
     sed -i s/REGISTRY-IP/$REGISTRY_IP/g haproxy-$I-1.yml
     sed -i s/REGISTRY-IP/$REGISTRY_IP/g haproxy-$I-2.yml
+    sed -i s/REGISTRY-IP/$REGISTRY_IP/g haproxy-$I-3.yml
 
     sed -i s/ROUTER-IP/$INFRA1_IP/g haproxy-$I-1.yml
     sed -i s/ROUTER-IP/$INFRA2_IP/g haproxy-$I-2.yml
+    sed -i s/ROUTER-IP/$INFRA3_IP/g haproxy-$I-3.yml
 
     sed -i s/ROUTER-PORT/$ROUTER_PORT/g haproxy-$I-1.yml
     sed -i s/ROUTER-PORT/$ROUTER_PORT/g haproxy-$I-2.yml
+    sed -i s/ROUTER-PORT/$ROUTER_PORT/g haproxy-$I-3.yml
 
 
     sed -i s/ROUTER-PASS/$ROUTER_PASSWORD/g haproxy-$I-1.yml
     sed -i s/ROUTER-PASS/$ROUTER_PASSWORD/g haproxy-$I-2.yml
+    sed -i s/ROUTER-PASS/$ROUTER_PASSWORD/g haproxy-$I-3.yml
 
     ((I++))
     ((ROUTER_PORT++))
@@ -166,4 +177,3 @@ oc create -f haproxy-svc.yml
 oc create -f node-exporter-deployment.yml -n prometheus
 oc create -f blackbox-exporter-deployment.yaml -f blackbox-svc.yml -n prometheus
 oc create -f kube-state-metrics-service.yaml -f kube-state-metrics-deployment.yaml -n prometheus
-
