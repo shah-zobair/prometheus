@@ -14,13 +14,16 @@ parameters:
   value: prometheus
 - description: The location of the prometheus image
   name: IMAGE_PROMETHEUS
-  value: docker-registry.default.svc:5000/openshift/prometheus:v3.6
+  #value: docker-registry.default.svc:5000/openshift/prometheus:v3.6
+  value: REGISTRY-IP:5000/openshift/prometheus:v3.6
 - description: The location of the alertmanager image
   name: IMAGE_ALERTMANAGER
-  value: docker-registry.default.svc:5000/openshift/prometheus-alertmanager:v3.6
+  #value: docker-registry.default.svc:5000/openshift/prometheus-alertmanager:v3.6
+  value: REGISTRY-IP:5000/openshift/prometheus-alertmanager:v3.6
 - description: The location of alert-buffer image
   name: IMAGE_ALERT_BUFFER
-  value: docker-registry.default.svc:5000/openshift/prometheus-alert-buffer:v3.6
+  #value: docker-registry.default.svc:5000/openshift/prometheus-alert-buffer:v3.6
+  value: REGISTRY-IP:5000/openshift/prometheus-alert-buffer:v3.6
 - description: The session secret for the proxy
   name: SESSION_SECRET
   generate: expression
