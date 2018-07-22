@@ -109,6 +109,7 @@ sed -i s/MASTER-PORT/$MASTER_PORT/g prometheus34-deployment.yml
 sed -i s/MASTER-PORT/$MASTER_PORT/g prometheus34-cm.yml
 sed -i s/REGISTRY-URL/$REGISTRY_URL/g prometheus34-deployment.yml
 sed -i s/REGISTRY-URL/$REGISTRY_URL/g prometheus34-cm.yml
+sed -i s/REGISTRY-IP/$REGISTRY_IP/g prometheus34-deployment.yml
 
 I=0
 for ROUTE in `oc get route -n  default | grep router | awk {'print $2'}`; do
