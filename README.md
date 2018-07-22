@@ -6,6 +6,44 @@ This guide will deploy Prometheus and Grafana to monitor OpenShift cluster with 
 We will deploy all the components using a shell script. The script will create application templates based on OpenShift environment and will deploy each component. It will create a project named “prometheus”. Whoever running this script, needs cluster-admin privilege and also system:admin access. Some components require cluster-admin privilege and also need to be run as privileged pod.
 
 Download and Push all the required images to OpenShift internal registry:
+
+**For OCP version 3.5/3.6**
+```
+docker pull docker.io/openshift/prometheus:v2.0.0
+docker pull docker.io/openshift/prometheus-alertmanager:v0.13.0
+docker pull registry.access.redhat.com/openshift3/prometheus-alert-buffer:latest
+docker pull docker.io/mrsiano/grafana-ocp:latest
+docker pull docker.io/openshift/kube-state-metrics:latest
+docker pull docker.io/szobair/blackbox-exporter:latest
+docker pull registry.access.redhat.com/openshift3/prometheus-node-exporter:latest
+docker pull docker.io/prom/haproxy-exporter:latest
+```
+```
+docker tag docker.io/openshift/prometheus:v2.0.0 `oc describe svc docker-registry -n default | grep IP: | cut -f4`:5000/openshift/prometheus:v3.6
+docker tag docker.io/openshift/prometheus-alertmanager:v0.13.0 `oc describe svc docker-registry -n default | grep IP: | cut -f4`:5000/openshift/prometheus-alertmanager:v3.6
+docker tag registry.access.redhat.com/openshift3/prometheus-alert-buffer `oc describe svc docker-registry -n default | grep IP: | cut -f4`:5000/openshift/prometheus-alert-buffer:v3.6
+docker tag docker.io/mrsiano/grafana-ocp `oc describe svc docker-registry -n default | grep IP: | cut -f4`:5000/openshift/grafana-ocp
+docker tag docker.io/openshift/kube-state-metrics `oc describe svc docker-registry -n default | grep IP: | cut -f4`:5000/openshift/kube-state-metrics
+docker tag docker.io/szobair/blackbox-exporter `oc describe svc docker-registry -n default | grep IP: | cut -f4`:5000/openshift/blackbox-exporter
+docker tag registry.access.redhat.com/openshift3/prometheus-node-exporter `oc describe svc docker-registry -n default | grep IP: | cut -f4`:5000/openshift/prometheus-node-exporter:v3.6
+docker tag docker.io/prom/haproxy-exporter `oc describe svc docker-registry -n default | grep IP: | cut -f4`:5000/openshift/haproxy-exporter
+```
+```
+oc login -u <user-name>  (Log in as a user who has image push ability to internal registry)
+docker login -u <user-name> -p $(oc whoami -t) $(oc describe svc docker-registry -n default | grep IP: | cut -f4):5000
+```
+```
+docker push `oc describe svc docker-registry -n default | grep IP: | cut -f4`:5000/openshift/prometheus:v3.6
+docker push `oc describe svc docker-registry -n default | grep IP: | cut -f4`:5000/openshift/prometheus-alertmanager:v3.6
+docker push `oc describe svc docker-registry -n default | grep IP: | cut -f4`:5000/openshift/prometheus-alert-buffer:v3.6
+docker push `oc describe svc docker-registry -n default | grep IP: | cut -f4`:5000/openshift/grafana-ocp
+docker push `oc describe svc docker-registry -n default | grep IP: | cut -f4`:5000/openshift/kube-state-metrics
+docker push `oc describe svc docker-registry -n default | grep IP: | cut -f4`:5000/openshift/blackbox-exporter
+docker push `oc describe svc docker-registry -n default | grep IP: | cut -f4`:5000/openshift/prometheus-node-exporter:v3.6
+docker push `oc describe svc docker-registry -n default | grep IP: | cut -f4`:5000/openshift/haproxy-exporter
+```
+
+**For OCP version 3.7 and above:**
 ```
 docker pull docker.io/openshift/prometheus:latest
 docker pull docker.io/openshift/prometheus-alertmanager:latest
@@ -16,23 +54,18 @@ docker pull docker.io/szobair/blackbox-exporter:latest
 docker pull registry.access.redhat.com/openshift3/prometheus-node-exporter:latest
 docker pull docker.io/prom/haproxy-exporter:latest
 ```
+
 ```
 docker tag docker.io/openshift/prometheus docker-registry.default.svc:5000/openshift/prometheus:v3.6
-
 docker tag docker.io/openshift/prometheus-alertmanager docker-registry.default.svc:5000/openshift/prometheus-alertmanager:v3.6
-
 docker tag registry.access.redhat.com/openshift3/prometheus-alert-buffer docker-registry.default.svc:5000/openshift/prometheus-alert-buffer:v3.6
-
 docker tag docker.io/mrsiano/grafana-ocp docker-registry.default.svc:5000/openshift/grafana-ocp
-
 docker tag docker.io/openshift/kube-state-metrics docker-registry.default.svc:5000/openshift/kube-state-metrics
-
 docker tag docker.io/szobair/blackbox-exporter docker-registry.default.svc:5000/openshift/blackbox-exporter
-
 docker tag registry.access.redhat.com/openshift3/prometheus-node-exporter docker-registry.default.svc:5000/openshift/prometheus-node-exporter:v3.6
-
 docker tag docker.io/prom/haproxy-exporter docker-registry.default.svc:5000/openshift/haproxy-exporter
 ```
+
 ```
 oc login -u <user-name>
 docker login -u <user-name> -p $(oc whoami -t) docker-registry.default.svc:5000
@@ -55,7 +88,7 @@ git clone https://github.com/shah-zobair/prometheus.git
 Deploy prometheus and all other components:
 ```
 cd prometheus
-./config-prometheus.sh
+./config-prometheus.sh   (For OCP 3.7 and above, use config-prometheus39.sh) 
 ```
 
 **Prometheus data source in Grafana**
@@ -63,8 +96,12 @@ cd prometheus
 Once all the components are deployed and running, browse grafana web-portal and add prometheus add data source:
 * Log into Grafana using the Route created by the Template.
 * On the Home Dashboard click Add data source.
-* Use the following values for the datasource Config: ** Name: prometheus ** Type: prometheus ** Url: http://prometheus:9090 ** Access: proxy
-Click Add
+* Use the following values for the datasource Config: 
+    - Name: prometheus 
+    - Type: prometheus 
+    - Url: http://prometheus:9090  OR http://prometheus:443 
+    - Access: proxy
+    - Click Add
 *Click Save & Test. You should see a message that the data source is working.
 
 
