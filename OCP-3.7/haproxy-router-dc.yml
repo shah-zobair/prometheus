@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: DeploymentConfig
 metadata:
-  name: haproxy-exporter-template
+  name: haproxy-exporter-router
   labels:
     app: haproxy-exporter
 spec:
@@ -24,27 +24,27 @@ spec:
         from:
           kind: ImageStreamTag
           namespace: openshift
-          name: 'haproxy-exporter:IMAGE-TAG'
+          name: 'haproxy-exporter:v3.7'
   replicas: 1
   test: false
   selector:
     app: haproxy-exporter
-    deploymentconfig: haproxy-exporter-template
+    deploymentconfig: haproxy-exporter-router
   template:
     metadata:
       labels:
         app: haproxy-exporter
-        deploymentconfig: haproxy-exporter-template
+        deploymentconfig: haproxy-exporter-router
       annotations:
         openshift.io/generated-by: OpenShiftWebConsole
     spec:
       containers:
         - name: haproxy-exporter
           image: >-
-            REGISTRY-IP/openshift/haproxy-exporter:IMAGE-TAG
+            docker-registry.default.svc:5000/openshift/haproxy-exporter:v3.7
           args:
             - >-
-              --haproxy.scrape-uri=http://admin:ROUTER-PASS@ROUTER-IP:ROUTER-PORT/haproxy?stats;csv
+              --haproxy.scrape-uri=http://admin:HHfgQ4rgMx@router.default.svc.cluster.local:1936/haproxy?stats;csv
           ports:
             - containerPort: 9101
               protocol: TCP
