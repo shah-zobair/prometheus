@@ -81,6 +81,7 @@ rm -f prometheus37-cm.yml
 rm -f kube-state-metrics-deployment.yaml
 rm -f grafana-deployment.yml
 rm -f node-exporter-deployment.yml
+#rm -f haproxy-*-dc.yml
 
 cp prometheus37-template.yml prometheus37-deployment.yml
 cp prometheus37-cm-template.yml prometheus37-cm.yml
