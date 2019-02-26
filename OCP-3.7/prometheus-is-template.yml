@@ -9,28 +9,28 @@ items:
     name: grafana-ocp
   spec:
     tags:
-      - name: latest
+      - name: GRAFANA-IMAGE-TAG
 - apiVersion: v1
   kind: ImageStream
   metadata:
     name: prometheus-node-exporter
   spec:
     tags:
-      - name: latest
+      - name: NODE-EXPORTER-IMAGE-TAG
 - apiVersion: v1
   kind: ImageStream
   metadata:
     name: kube-state-metrics
   spec:
     tags:
-      - name: latest
+      - name: KUBE-STATE-IMAGE-TAG
 - apiVersion: v1
   kind: ImageStream
   metadata:
     name: haproxy-exporter
   spec:
     tags:
-      - name: latest
+      - name: HAPROXY-EXP-IMAGE-TAG
 - apiVersion: v1
   kind: ImageStream
   metadata:
