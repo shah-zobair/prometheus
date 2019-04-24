@@ -134,7 +134,24 @@ oc create -f prometheus-is.yml -f prometheus37-deployment.yml -f grafana-deploym
 oc new-app prometheus -n prometheus
 sleep 5
 oc delete cm prometheus -n prometheus
+oc delete cm grafana-datasource
+oc delete cm grafana-dash-config
+oc delete cm grafana-dashboard-pods
+oc delete cm grafana-dashboard-capacity
+oc delete cm grafana-dashboard-master-api
+oc delete cm grafana-dashboard-nodes
+oc delete cm grafana-dashboard-traffic
+
 oc create -f prometheus37-cm.yml -n prometheus
+oc create -f dashboards/grafana-datasource-cm.yml
+oc create -f dashboards/grafana-dashconfig-cm.yaml
+oc create -f dashboards/capacity.yaml
+oc create -f dashboards/master-api.yaml
+oc create -f dashboards/nodes.yaml
+oc create -f dashboards/pods.yaml
+oc create -f dashboards/router.yaml
+oc create -f dashboards/traffic.yaml
+
 oc new-app grafana -n prometheus
 
 for file in `ls haproxy-*-dc.yml`; do

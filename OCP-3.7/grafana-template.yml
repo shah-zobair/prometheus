@@ -18,7 +18,6 @@ parameters:
   value: ""
 - description: The namespace to instantiate heapster under. Defaults to 'grafana'.
   name: NAMESPACE
-#  value: prometheus-cpitman
   value: prometheus
 - description: The session secret for the proxy
   name: SESSION_SECRET
@@ -102,11 +101,26 @@ objects:
             name: grafanaconfig
           - mountPath: /etc/tls/private
             name: grafana-tls
+          - mountPath: /etc/grafana/provisioning/dashboards
+            name: grafana-dash-config
+          - mountPath: /etc/grafana/provisioning/datasources
+            name: grafana-datasource
+          - mountPath: /var/lib/grafana/dashboards/pods
+            name: grafana-dashboard-pods
+          - mountPath: /var/lib/grafana/dashboards/capacity
+            name: grafana-dashboard-capacity
+          - mountPath: /var/lib/grafana/dashboards/master-api
+            name: grafana-dashboard-master-api
+          - mountPath: /var/lib/grafana/dashboards/nodes
+            name: grafana-dashboard-nodes
+          - mountPath: /var/lib/grafana/dashboards/traffic
+            name: grafana-dashboard-traffic
+          - mountPath: /var/lib/grafana/dashboards/router
+            name: grafana-dashboard-router
 #          - mountPath: /etc/proxy/secrets
 #            name: secrets
           command:
            - "./bin/grafana-server"
-
         volumes:
         - name: grafanaconfig
           configMap:
@@ -119,6 +133,38 @@ objects:
             secretName: grafana-tls
         - emptyDir: {}
           name: grafana-data
+        - configMap:
+            defaultMode: 420
+            name: grafana-datasource
+          name: grafana-datasource
+        - configMap:
+            defaultMode: 420
+            name: grafana-dash-config
+          name: grafana-dash-config
+        - configMap:
+            defaultMode: 420
+            name: grafana-dashboard-pods
+          name: grafana-dashboard-pods
+        - configMap:
+            defaultMode: 420
+            name: grafana-dashboard-capacity
+          name: grafana-dashboard-capacity
+        - configMap:
+            defaultMode: 420
+            name: grafana-dashboard-master-api
+          name: grafana-dashboard-master-api
+        - configMap:
+            defaultMode: 420
+            name: grafana-dashboard-nodes
+          name: grafana-dashboard-nodes
+        - configMap:
+            defaultMode: 420
+            name: grafana-dashboard-traffic
+          name: grafana-dashboard-traffic
+        - configMap:
+            defaultMode: 420
+            name: grafana-dashboard-router
+          name: grafana-dashboard-router
 - apiVersion: v1
   kind: ConfigMap
   metadata:

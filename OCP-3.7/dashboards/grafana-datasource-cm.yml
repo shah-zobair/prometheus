@@ -1,0 +1,15 @@
+apiVersion: v1
+data:
+  prometheus.yml: |
+    apiVersion: 1
+
+    datasources:
+      - name: Prometheus
+        type: prometheus
+        access: direct
+        url: http://prometheus:443
+    editable: false
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: grafana-datasource
