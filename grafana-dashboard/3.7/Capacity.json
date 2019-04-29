@@ -15,7 +15,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 8,
+  "id": 7,
   "links": [],
   "panels": [
     {
@@ -29,6 +29,7 @@
         "#f9934e",
         "#d44a3a"
       ],
+      "datasource": "prometheus",
       "format": "percentunit",
       "gauge": {
         "maxValue": 100,
@@ -80,7 +81,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "1 - sum(container_memory_usage_bytes) / sum(kube_node_status_allocatable_memory_bytes)",
+          "expr": "sum(container_memory_usage_bytes{pod_name!=\"\"}) / sum(kube_node_status_allocatable_memory_bytes)",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "Cluster Memory Utilization",
@@ -98,7 +99,7 @@
           "value": "null"
         }
       ],
-      "valueName": "avg"
+      "valueName": "current"
     },
     {
       "aliasColors": {},
@@ -113,7 +114,7 @@
       ],
       "dashLength": 10,
       "dashes": false,
-      "datasource": "Prometheus",
+      "datasource": "prometheus",
       "fill": 1,
       "format": "percentunit",
       "gauge": {
@@ -250,7 +251,7 @@
       ],
       "dashLength": 10,
       "dashes": false,
-      "datasource": "Prometheus",
+      "datasource": "prometheus",
       "fill": 1,
       "format": "percentunit",
       "gauge": {
@@ -383,6 +384,7 @@
         "#3f2b5b",
         "#d44a3a"
       ],
+      "datasource": "prometheus",
       "format": "decbytes",
       "gauge": {
         "maxValue": 100,
@@ -463,6 +465,7 @@
         "#3f2b5b",
         "#d44a3a"
       ],
+      "datasource": "prometheus",
       "format": "decbytes",
       "gauge": {
         "maxValue": 100,
@@ -543,6 +546,7 @@
         "#052b51",
         "#d44a3a"
       ],
+      "datasource": "prometheus",
       "format": "decbytes",
       "gauge": {
         "maxValue": 100,
@@ -821,5 +825,5 @@
   "timezone": "",
   "title": "Capacity",
   "uid": "-uzk0Prik",
-  "version": 3
+  "version": 9
 }
