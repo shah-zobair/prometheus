@@ -15,7 +15,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 5,
+  "id": 1,
   "links": [],
   "panels": [
     {
@@ -23,6 +23,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
+      "datasource": "prometheus",
       "fill": 1,
       "gridPos": {
         "h": 5,
@@ -107,6 +108,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
+      "datasource": "prometheus",
       "fill": 1,
       "gridPos": {
         "h": 5,
@@ -191,6 +193,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
+      "datasource": "prometheus",
       "fill": 1,
       "gridPos": {
         "h": 5,
@@ -307,7 +310,7 @@
     ]
   },
   "timezone": "",
-  "title": "Master API",
+  "title": "Master-API",
   "uid": "9r5c5E9iz",
-  "version": 5
+  "version": 1
 }
