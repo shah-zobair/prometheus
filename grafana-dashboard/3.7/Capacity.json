@@ -15,7 +15,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 7,
+  "id": 3,
   "links": [],
   "panels": [
     {
@@ -23,16 +23,17 @@
       "colorBackground": false,
       "colorPostfix": false,
       "colorPrefix": false,
-      "colorValue": false,
+      "colorValue": true,
       "colors": [
         "#508642",
         "#f9934e",
         "#d44a3a"
       ],
       "datasource": "prometheus",
+      "decimals": null,
       "format": "percentunit",
       "gauge": {
-        "maxValue": 100,
+        "maxValue": 1,
         "minValue": 0,
         "show": true,
         "thresholdLabels": false,
@@ -81,14 +82,14 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "sum(container_memory_usage_bytes{pod_name!=\"\"}) / sum(kube_node_status_allocatable_memory_bytes)",
+          "expr": "(sum(container_memory_usage_bytes{pod_name!=\"\"}) / sum(kube_node_status_allocatable_memory_bytes))",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "Cluster Memory Utilization",
           "refId": "A"
         }
       ],
-      "thresholds": "70,80",
+      "thresholds": "0.7,0.8",
       "title": "Cluster Memory Utilisation",
       "type": "singlestat",
       "valueFontSize": "80%",
@@ -99,14 +100,14 @@
           "value": "null"
         }
       ],
-      "valueName": "current"
+      "valueName": "avg"
     },
     {
       "aliasColors": {},
       "bars": false,
       "cacheTimeout": null,
       "colorBackground": false,
-      "colorValue": false,
+      "colorValue": true,
       "colors": [
         "#299c46",
         "rgba(237, 129, 40, 0.89)",
@@ -118,7 +119,7 @@
       "fill": 1,
       "format": "percentunit",
       "gauge": {
-        "maxValue": 100,
+        "maxValue": 1,
         "minValue": 0,
         "show": true,
         "thresholdLabels": false,
@@ -186,14 +187,14 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "1- sum(node_memory_MemFree + node_memory_Cached + node_memory_Buffers) / sum(node_memory_MemTotal)",
+          "expr": "sum(node_memory_MemFree + node_memory_Cached + node_memory_Buffers) / sum(node_memory_MemTotal)",
           "format": "time_series",
           "instant": true,
           "intervalFactor": 2,
           "refId": "A"
         }
       ],
-      "thresholds": "70,80",
+      "thresholds": "0.7,0.8",
       "timeFrom": null,
       "timeShift": null,
       "title": "Node Memory Utilisation",
@@ -255,7 +256,7 @@
       "fill": 1,
       "format": "percentunit",
       "gauge": {
-        "maxValue": 100,
+        "maxValue": 1,
         "minValue": 0,
         "show": true,
         "thresholdLabels": false,
@@ -323,14 +324,14 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "1 - avg(rate(node_cpu{mode=\"idle\"}[10m]))",
+          "expr": "1- avg(rate(node_cpu{mode=\"idle\"}[10m]))",
           "format": "time_series",
           "instant": true,
           "intervalFactor": 2,
           "refId": "A"
         }
       ],
-      "thresholds": "70,80",
+      "thresholds": "0.7,0.8",
       "timeFrom": null,
       "timeShift": null,
       "title": "Total CPU Utilisation",
@@ -623,6 +624,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
+      "datasource": "prometheus",
       "fill": 1,
       "gridPos": {
         "h": 5,
@@ -707,6 +709,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
+      "datasource": "prometheus",
       "fill": 1,
       "gridPos": {
         "h": 5,
@@ -825,5 +828,5 @@
   "timezone": "",
   "title": "Capacity",
   "uid": "-uzk0Prik",
-  "version": 9
+  "version": 1
 }
